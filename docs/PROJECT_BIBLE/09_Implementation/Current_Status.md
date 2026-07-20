@@ -10,10 +10,11 @@ trust.
 ### Stage
 **Milestone 0 — Engineering Foundation: COMPLETE.**
 **Milestone 1 — Project Foundation: COMPLETE** (skeleton, tooling, CI — verified).
-**Milestone 2 — Database & API: IN PROGRESS.** The core domain model and a full layered
-CRUD API now exist for the Workspace → Project → Task hierarchy, with Alembic migrations
-and contract tests. Remaining core entities (Document, Repository, Asset, Agent, …) follow
-the same pattern in subsequent PRs; auth (M3) is not yet applied.
+**Milestone 2 — Database & API: COMPLETE.** The core domain model and a full layered CRUD
+API exist for all core entities (Workspace, Project, Task, User, Document, Research,
+Repository, Asset, Agent, Tags + tag links), with Alembic migrations, contract tests, and a
+**generated TypeScript client** (the frontend/backend contract seam, drift-checked in CI).
+Authentication (M3) is the next step — the API is currently unauthenticated.
 
 ### What exists
 - ✅ 16 numbered design specifications (`docs/00-ROADMAP` … `docs/15-UI_DESIGN`).
@@ -30,18 +31,23 @@ the same pattern in subsequent PRs; auth (M3) is not yet applied.
 - ✅ **Tooling:** `pyproject.toml` (uv workspace, ruff, mypy strict, pytest), `pnpm`
   workspace, `justfile`, `config/.env.example`.
 - ✅ **CI:** GitHub Actions (Python lint/types/tests, web lint/types/tests, secret scan).
-- ✅ **Domain & API (M2):** SQLAlchemy 2.0 models (Workspace, Project, Task) with portable
-  types; Alembic migration `0001` (up/down verified); Pydantic schemas; repository +
-  unit-of-work; service layer; layered FastAPI routers with full CRUD; OpenAPI published;
-  contract tests; `database/` migrations; seed script.
-- ✅ **Verified locally:** 30 Python tests + 6 web tests pass; ruff, mypy strict, tsc,
-  eslint clean; Next.js production build succeeds; Alembic upgrade/downgrade works;
-  end-to-end workspace→project→task CRUD confirmed.
+- ✅ **Domain & API (M2):** SQLAlchemy 2.0 models for all core entities (Workspace, Project,
+  Task, User, Document, ResearchItem, Repository, Asset, Agent, Tag, TagLink) with portable
+  types; Alembic migrations `0001`+`0002` (up/down verified); Pydantic schemas; repository +
+  unit-of-work; a generic `CrudService` base + bespoke services; 22 layered `/api/v1`
+  endpoints with full CRUD (+ tag attach/detach); OpenAPI published; contract tests; seed.
+- ✅ **Generated TS client (`packages/ts-client`):** `openapi.json` + `schema.d.ts` generated
+  from the API via `openapi-typescript`, a typed `openapi-fetch` wrapper, and a **CI drift
+  check** that fails if the committed client diverges from the API.
+- ✅ **Verified locally:** 55 Python tests + 6 web tests + 1 client test pass; ruff, mypy
+  strict, tsc, eslint clean; Alembic up/down works; client regeneration is deterministic
+  (no drift); end-to-end CRUD confirmed.
 
 ### What does NOT exist yet
-- ❌ Remaining core entities (Document, Repository, Asset, Agent, join/tag tables) — same
-  pattern, later PRs in M2.
 - ❌ Auth, RBAC, secrets, audit (M3) — the API is currently unauthenticated.
+- ❌ Postgres-specific features (JSONB/arrays/RLS), document version history, richer agent
+  tables — layered in later milestones.
+- ❌ The web app does not yet consume `@hermes/ts-client` (wired up in the M10 dashboard).
 - ❌ Integrations, ingestion, search, graph, agents, dashboard, automation (M4–M11).
 - ❌ Running services verified via full `docker compose up` in CI (images build locally;
   end-to-end compose bring-up is a manual/CI step to add).
@@ -50,7 +56,7 @@ the same pattern in subsequent PRs; auth (M3) is not yet applied.
 | System | Status | Milestone |
 |--------|--------|-----------|
 | Project foundation / tooling / CI | ✅ Done | M1 |
-| Database & API | 🟡 In progress | M2 |
+| Database & API (+ TS client) | ✅ Done | M2 |
 | Auth / RBAC / secrets / audit | ⏳ Planned | M3 |
 | Notion integration | ⏳ Planned | M4 |
 | GitHub integration | ⏳ Planned | M5 |
@@ -68,10 +74,9 @@ See `docs/MISSING_INFORMATION.md`. **D10 (create `main`) is resolved.** Highest 
 work (M6+); `.env.example` currently proposes local (Ollama) defaults.
 
 ### Next step
-Continue **Milestone 2**: add the remaining core entities (Document, Repository, Asset,
-Agent, join/tag tables) following the Workspace/Project/Task reference pattern, and generate
-the TypeScript client from the OpenAPI schema (the frontend contract seam). Then **Milestone
-3 — Authentication** (Auth.js/JWT, RBAC, encrypted secret vault, audit) before exposing sync.
+**Milestone 3 — Authentication**: Auth.js/JWT verification at the gateway, optional
+Authentik OIDC, RBAC in the service layer (workspace/project roles), an encrypted secret
+vault, and audit logging — applied before any external sync (M4/M5).
 
 ## Architecture Decisions
 This file exists to counter the "documentation implies implementation" risk noted in the

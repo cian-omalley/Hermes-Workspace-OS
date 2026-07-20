@@ -15,6 +15,11 @@ def test_core_paths_present(client: TestClient) -> None:
     assert "/api/v1/workspaces" in paths
     assert "/api/v1/workspaces/{workspace_id}/projects" in paths
     assert "/api/v1/workspaces/{workspace_id}/projects/{project_id}/tasks/{task_id}" in paths
+    # Remaining core entities added while finishing Milestone 2.
+    assert "/api/v1/users" in paths
+    for segment in ("documents", "research", "repositories", "assets", "agents", "tags"):
+        assert f"/api/v1/workspaces/{{workspace_id}}/{segment}" in paths
+    assert "/api/v1/workspaces/{workspace_id}/tags/{tag_id}/links" in paths
 
 
 def test_crud_methods_declared(client: TestClient) -> None:

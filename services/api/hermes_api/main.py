@@ -13,7 +13,7 @@ from pydantic import BaseModel
 
 from hermes_api import __version__
 from hermes_api.config import Settings, get_settings
-from hermes_api.routers import projects_router, tasks_router, workspaces_router
+from hermes_api.routers import ALL_ROUTERS
 
 
 class HealthResponse(BaseModel):
@@ -62,10 +62,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         """Friendly root pointing at the API docs."""
         return {"name": "Hermes Workspace OS API", "docs": "/docs", "health": "/health"}
 
-    # Core domain routers (Milestone 2). Registered in dependency order.
-    app.include_router(workspaces_router)
-    app.include_router(projects_router)
-    app.include_router(tasks_router)
+    # Core domain routers (Milestone 2), registered in dependency order.
+    for router in ALL_ROUTERS:
+        app.include_router(router)
 
     return app
 

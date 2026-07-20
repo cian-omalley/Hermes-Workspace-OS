@@ -12,8 +12,9 @@ from types import TracebackType
 
 from sqlalchemy.orm import Session, sessionmaker
 
-from hermes_api.db import SessionLocal
+from hermes_api.db import Base, SessionLocal
 from hermes_api.repositories import ProjectRepository, TaskRepository, WorkspaceRepository
+from hermes_api.repositories.base import Repository
 
 
 class UnitOfWork:
@@ -44,6 +45,14 @@ class UnitOfWork:
         if exc_type is not None:
             self.session.rollback()
         self.session.close()
+
+    def repo_for[M: Base](self, model: type[M]) -> Repository[M]:
+        """Return a generic repository bound to ``model`` on this UoW's session.
+
+        Used by the generic ``CrudService`` for entities that don't need a bespoke
+        repository subclass.
+        """
+        return Repository(self.session, model)
 
     def commit(self) -> None:
         self.session.commit()

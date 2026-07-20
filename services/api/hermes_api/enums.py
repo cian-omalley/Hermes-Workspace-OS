@@ -32,3 +32,64 @@ class TaskPriority(StrEnum):
     MEDIUM = "medium"
     HIGH = "high"
     URGENT = "urgent"
+
+
+class DocumentKind(StrEnum):
+    DOC = "doc"
+    WIKI = "wiki"
+    SPEC = "spec"
+    NOTE = "note"
+    GENERATED = "generated"
+
+
+class DocumentStatus(StrEnum):
+    DRAFT = "draft"
+    PUBLISHED = "published"
+    ARCHIVED = "archived"
+
+
+class ResearchStatus(StrEnum):
+    QUEUED = "queued"
+    IN_PROGRESS = "in_progress"
+    DONE = "done"
+    ARCHIVED = "archived"
+
+
+class RepositoryProvider(StrEnum):
+    GITHUB = "github"
+    GITLAB = "gitlab"
+    OTHER = "other"
+
+
+class AssetKind(StrEnum):
+    FILE = "file"
+    IMAGE = "image"
+    VIDEO = "video"
+    AUDIO = "audio"
+    ARCHIVE = "archive"
+    REPO_SNAPSHOT = "repo_snapshot"
+
+
+class AssetStatus(StrEnum):
+    PENDING = "pending"
+    PROCESSING = "processing"
+    READY = "ready"
+    FAILED = "failed"
+
+
+class AgentRole(StrEnum):
+    PROJECT_MANAGER = "project_manager"
+    RESEARCH = "research"
+    DOCUMENTATION = "documentation"
+    DEVELOPER = "developer"
+    CODE_REVIEW = "code_review"
+    TESTING = "testing"
+    RELEASE = "release"
+    CUSTOM = "custom"
+
+
+class AgentStatus(StrEnum):
+    IDLE = "idle"
+    SCHEDULED = "scheduled"
+    RUNNING = "running"
+    DISABLED = "disabled"

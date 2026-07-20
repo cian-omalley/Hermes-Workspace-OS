@@ -12,10 +12,13 @@ disconnected.
 
 ## Current stage (read carefully)
 
-The repository is at **Milestone 0 — Engineering Foundation**: it contains
-**documentation only**. There is **no application code, no tests, no CI, and no
-dependencies yet.** Do not assume any runtime behavior exists. The next real step is
-Milestone 1 (project scaffold + CI), and only after approval.
+The repository is in **Milestone 1 — Project Foundation (in progress)**. Milestone 0
+(documentation) is complete, and the runnable monorepo skeleton now exists: `services/api`
+(FastAPI + `/health`), `services/worker` (Celery), `apps/web` (Next.js), `packages/
+hermes-domain`, the `docker-compose.yml` stack, tooling (uv/pnpm/ruff/mypy/pytest/eslint/
+tsc/vitest), and GitHub Actions CI. Domain features (projects, tasks, DB, auth, …) do
+**not** exist yet — those begin at Milestone 2. See
+`docs/PROJECT_BIBLE/09_Implementation/Current_Status.md` for the live status.
 
 ## Required reading order
 

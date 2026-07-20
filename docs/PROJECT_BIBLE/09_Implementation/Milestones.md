@@ -5,14 +5,14 @@ Provide the authoritative, at-a-glance milestone list with exit criteria — the
 that define "done" for each increment. Full detail: `docs/00-ROADMAP.md`.
 
 ## Current State
-**M0 complete** (documentation). **M1 is the next step, pending approval.** All others
-planned.
+**M0 complete** (documentation). **M1 in progress** — runnable skeleton, tests, and CI
+exist and pass locally. All others planned.
 
 ## Milestone table
 | # | Name | Status | Exit criteria (definition of done) |
 |---|------|--------|-----------------------------------|
 | 0 | Engineering Foundation | ✅ | Docs + Project Bible + scaffolding reviewed/approved. |
-| 1 | Project Foundation | ⏳ | `docker compose up` → green health; CI passes. |
+| 1 | Project Foundation | 🟡 In progress | `docker compose up` → green health; CI passes. Skeleton + tests + CI done and verified locally; full compose bring-up in CI pending. |
 | 2 | Database & API | ⏳ | Full CRUD for core entities w/ tests; OpenAPI published. |
 | 3 | Authentication | ⏳ | Protected endpoints; RBAC tests; encrypted secret storage. |
 | 4 | Notion Integration | ⏳ | Round-trip sync (Projects/Tasks); **disconnect test passes**. |

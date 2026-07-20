@@ -5,9 +5,13 @@ Describe how to build, run, test, and verify Hermes so any session can reproduce
 environment and validate changes. Complements `08_Development/Deployment.md` and `DevOps.md`.
 
 ## Current State
-**No build system exists yet** — there is no code, `docker-compose.yml`, `pyproject.toml`,
-or `package.json`. The commands below are the **target** from Milestone 1; until then there
-is nothing to build or run. Do not claim a build/test ran when the tooling doesn't exist.
+**The build system now exists (Milestone 1).** Root `pyproject.toml` (uv workspace) and
+`package.json`/`pnpm-workspace.yaml`, per-service manifests, `justfile`,
+`infrastructure/compose/docker-compose.yml`, Dockerfiles, and GitHub Actions CI are all
+present. The commands below are **real**. Verified locally: `uv run pytest` (10 passing),
+web `vitest` (6 passing), `ruff`, `mypy --strict`, `tsc`, `eslint`, and `next build` all
+pass. Full `docker compose up` bring-up is expected to work but should be confirmed in CI.
+Still: do not claim a command ran unless you actually ran it.
 
 ## Target local workflow (from Milestone 1)
 ```bash

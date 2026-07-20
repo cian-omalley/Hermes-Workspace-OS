@@ -5,8 +5,12 @@ Provide a single, honest feature inventory with implementation status, so no one
 overestimates what exists.
 
 ## Current State
-**Every feature below is at status `Planned`.** The only shipped deliverable is the
-documentation foundation. Status legend: ✅ Done · 🟡 Partial · ⏳ Planned.
+Documentation is complete and the **Milestone 1 platform skeleton exists** (runnable
+services, tooling, CI). All *product* features remain `Planned` (they begin at Milestone
+2). Status legend: ✅ Done · 🟡 Partial · ⏳ Planned.
+
+Platform skeleton (M1): API/worker/web health services, monorepo tooling, compose stack,
+and CI are **🟡 In progress** (see `09_Implementation/Current_Status.md`).
 
 ## Feature inventory
 

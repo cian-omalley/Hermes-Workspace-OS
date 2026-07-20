@@ -23,7 +23,7 @@ Priority: 🔴 blocks implementation · 🟠 needed soon · 🟢 nice-to-have / 
 | D7 | **Chunking strategy & sizes** | 🟠 | Affects retrieval quality and token cost across search/RAG/DeepWiki. | Fixed-size w/ overlap vs semantic/structural chunking per content type. **Rec:** structural per type (code by symbol, prose by section), tunable. |
 | D8 | **Monorepo tooling specifics** | 🟢 | `uv` + `pnpm` chosen; task runner (`just`) and Nx/Turbo not finalized. | Plain pnpm workspaces vs Turborepo/Nx. **Rec:** start plain, add Turbo if build times demand it. |
 | D9 | **Multi-tenancy isolation level** | 🟠 | Single Postgres with `workspace_id` scoping vs Postgres RLS vs per-tenant schemas. | Row scoping (simplest) → add RLS for hard isolation. **Rec:** `workspace_id` scoping + optional RLS. |
-| D10 | **`main` base branch** | 🔴 | The session branch is currently the only branch *and* default; there is no PR base. | Create `main` from the foundation. **Rec:** establish `main` before Milestone 1. |
+| ~~D10~~ | ~~**`main` base branch**~~ ✅ **RESOLVED** | — | Resolved 2026-07-20: `main` created from the foundation commit; work now PRs into it. | — |
 
 ## 2. Missing documentation
 

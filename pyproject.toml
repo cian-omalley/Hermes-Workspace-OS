@@ -1,0 +1,60 @@
+# Root Python workspace (uv) + shared tool configuration for Hermes Workspace OS.
+# Individual services/packages declare their own dependencies in their own
+# pyproject.toml; this root file wires them into one uv workspace and centralizes
+# lint/type/test configuration so every Python component shares the same standards.
+
+[project]
+name = "hermes-workspace-os"
+version = "0.1.0"
+description = "Hermes Workspace OS — self-hostable AI Workspace Operating System (workspace root)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+
+[tool.uv.workspace]
+members = [
+    "packages/hermes-domain",
+    "services/api",
+    "services/worker",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = ["apps/web", ".venv"]
+
+[tool.ruff.lint]
+# Reasonable, strict-but-practical default rule set.
+select = ["E", "F", "I", "UP", "B", "SIM", "C4", "PTH", "RUF"]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["hermes_domain", "hermes_api", "hermes_worker"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+plugins = ["pydantic.mypy"]
+exclude = ['^apps/web/']
+
+# Celery ships no type information; ignore its missing stubs and allow its untyped
+# task decorator in the one module that defines Celery tasks. Scoped narrowly so the
+# rest of the codebase stays strict.
+[[tool.mypy.overrides]]
+module = ["celery.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["hermes_worker.app"]
+disallow_untyped_decorators = false
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["packages", "services", "tests"]
+markers = [
+    "smoke: end-to-end checks that require the full stack to be running",
+]

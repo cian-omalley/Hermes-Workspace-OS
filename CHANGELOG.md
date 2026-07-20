@@ -8,6 +8,23 @@ first release, changes are tracked under **Unreleased** and grouped by milestone
 
 ## [Unreleased]
 
+### Added — Milestone 1: Project Foundation (in progress, 2026-07-20)
+- **Monorepo skeleton** with real, tested content (no empty folders):
+  - `services/api` — FastAPI app factory + `/health` + settings (3 tests).
+  - `services/worker` — Celery app + `ping` health task (3 tests).
+  - `apps/web` — Next.js App Router shell, landing page as a stack-health dashboard,
+    `/health` route, health helpers (6 tests).
+  - `packages/hermes-domain` — framework-independent domain events (4 tests).
+- **Local stack:** `infrastructure/compose/docker-compose.yml` (Postgres, Redis, Neo4j,
+  Qdrant, Meilisearch, MinIO + api/web/worker) with health checks; per-service Dockerfiles.
+- **Tooling:** uv workspace + ruff + mypy(strict) + pytest; pnpm workspace + eslint +
+  tsc(strict) + vitest; `justfile`; `config/.env.example`.
+- **CI:** GitHub Actions (Python + web lint/types/tests, secret scanning) and `.github/`
+  PR/issue templates + CODEOWNERS.
+- **`main` base branch established** (resolves decision D10).
+- **Verified locally:** 10 Python tests + 6 web tests pass; ruff, mypy strict, tsc, eslint
+  clean; Next.js production build succeeds.
+
 ### Added — Repository Intelligence & Documentation Pass (2026-07-20)
 - `CLAUDE.md` — entry point and operating rules pointer for Claude Code sessions.
 - `CONTRIBUTING.md` — contribution guidelines.
@@ -38,7 +55,7 @@ first release, changes are tracked under **Unreleased** and grouped by milestone
 | Milestone | Status | Summary |
 |-----------|--------|---------|
 | M0 — Engineering Foundation | ✅ Complete | Design docs + Project Bible + repo scaffolding |
-| M1 — Project Foundation | ⏳ Planned | Monorepo, tooling, compose stack, CI |
+| M1 — Project Foundation | 🟡 In progress | Monorepo, tooling, compose stack, CI (skeleton + tests + CI done, verified locally) |
 | M2 — Database & API | ⏳ Planned | Domain model + FastAPI CRUD |
 | M3 — Authentication | ⏳ Planned | Auth, RBAC, secrets, audit |
 | M4 — Notion Integration | ⏳ Planned | Two-way sync; disconnect-safe |

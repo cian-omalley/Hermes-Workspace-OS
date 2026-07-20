@@ -12,12 +12,12 @@ disconnected.
 
 ## Current stage (read carefully)
 
-The repository is in **Milestone 2 — Database & API (in progress)**. Milestones 0
-(documentation) and 1 (runnable skeleton + tooling + CI) are complete. M2 has added the
-core domain model and a full layered CRUD API for the **Workspace → Project → Task**
-hierarchy (SQLAlchemy models, Alembic migrations, Pydantic schemas, repository + unit-of-
-work, service layer, FastAPI routers under `/api/v1`, OpenAPI + contract tests). Remaining
-core entities (Document, Repository, Asset, Agent, …) and **authentication (M3)** are not
+Milestones 0–2 are complete. **Milestone 3 — Authentication is next.** M2 delivered the
+core domain model and a full layered CRUD API for all core entities (Workspace, Project,
+Task, User, Document, Research, Repository, Asset, Agent, Tags) — SQLAlchemy models, Alembic
+migrations, Pydantic schemas, repository + unit-of-work, a generic `CrudService` base,
+FastAPI routers under `/api/v1`, OpenAPI, contract tests, and a **generated TypeScript
+client** (`packages/ts-client`, drift-checked in CI). **Authentication/RBAC (M3)** is not
 built yet — the API is currently unauthenticated. See
 `docs/PROJECT_BIBLE/09_Implementation/Current_Status.md` for the live status.
 

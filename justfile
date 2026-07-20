@@ -49,6 +49,11 @@ makemigration message:
 seed:
     uv run python scripts/seed.py
 
+# Regenerate the OpenAPI document and the TypeScript client (the contract seam).
+gen-client:
+    uv run python scripts/dump_openapi.py
+    pnpm --filter @hermes/ts-client generate
+
 # Run a Celery worker.
 worker:
     uv run --package hermes-worker celery -A hermes_worker.app worker --loglevel=info

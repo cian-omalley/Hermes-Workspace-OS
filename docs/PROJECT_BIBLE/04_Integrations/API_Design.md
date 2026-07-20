@@ -5,8 +5,11 @@ Define the conventions and shape of Hermes' API — the primary contract between
 frontend, external clients, and the core.
 
 ## Current State
-Designed; unimplemented (M2). The OpenAPI schema (the contract seam) does not exist yet;
-building it early is a stated priority.
+**Implemented (M2).** The FastAPI gateway serves 22 `/api/v1` endpoints (full CRUD for the
+core entities) with an auto-published OpenAPI schema. The **contract seam is live**: a
+generated TypeScript client (`packages/ts-client`) is produced from the OpenAPI document via
+`openapi-typescript`, and a CI job fails on any drift between the committed client and the
+API. Authentication/authorization are not yet applied (M3).
 
 ## Style & conventions
 - **REST + JSON** over the FastAPI gateway; **OpenAPI 3** auto-published.

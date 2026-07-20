@@ -8,7 +8,20 @@ first release, changes are tracked under **Unreleased** and grouped by milestone
 
 ## [Unreleased]
 
-### Added — Milestone 2: Database & API (in progress, 2026-07-20)
+### Added — Milestone 2: remaining entities + TypeScript client (2026-07-20)
+- **Remaining core entities** with full CRUD, following the reference pattern: `User`
+  (top-level), and workspace-scoped `Document`, `ResearchItem`, `Repository`, `Asset`,
+  `Agent`, plus `Tag`/`TagLink` (with attach/detach). A generic `CrudService` base and a
+  `WorkspaceScopedMixin` keep the five content entities DRY.
+- **Alembic migration `0002`** (up/down verified) creating the new tables.
+- **Generated TypeScript client** (`packages/ts-client`): `openapi.json` + `schema.d.ts`
+  generated from the API (`openapi-typescript`), a typed `openapi-fetch` wrapper, and a **CI
+  drift check** that fails if the committed client diverges from the API. `just gen-client`
+  regenerates both. Committed `uv.lock` for reproducible generation.
+- **Verified locally:** 55 Python tests + 6 web tests + 1 client test pass; ruff, mypy
+  strict, tsc, eslint clean; migrations up/down; client regeneration is deterministic.
+
+### Added — Milestone 2: Database & API foundation (2026-07-20)
 - **Domain model & layered CRUD API** for the core hierarchy Workspace → Project → Task:
   - SQLAlchemy 2.0 models with portable types (SQLite for tests/CI, PostgreSQL in prod).
   - Pydantic schemas, repository layer, unit-of-work, service layer, and thin FastAPI
@@ -73,7 +86,7 @@ first release, changes are tracked under **Unreleased** and grouped by milestone
 |-----------|--------|---------|
 | M0 — Engineering Foundation | ✅ Complete | Design docs + Project Bible + repo scaffolding |
 | M1 — Project Foundation | ✅ Complete | Monorepo, tooling, compose stack, CI |
-| M2 — Database & API | 🟡 In progress | Domain model + FastAPI CRUD (Workspace/Project/Task delivered) |
+| M2 — Database & API | ✅ Complete | Domain model + FastAPI CRUD (all core entities) + generated TS client |
 | M3 — Authentication | ⏳ Planned | Auth, RBAC, secrets, audit |
 | M4 — Notion Integration | ⏳ Planned | Two-way sync; disconnect-safe |
 | M5 — GitHub Integration | ⏳ Planned | Repo/commit/PR/issue sync |

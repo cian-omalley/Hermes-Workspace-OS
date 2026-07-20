@@ -8,7 +8,24 @@ first release, changes are tracked under **Unreleased** and grouped by milestone
 
 ## [Unreleased]
 
-### Added — Milestone 1: Project Foundation (in progress, 2026-07-20)
+### Added — Milestone 2: Database & API (in progress, 2026-07-20)
+- **Domain model & layered CRUD API** for the core hierarchy Workspace → Project → Task:
+  - SQLAlchemy 2.0 models with portable types (SQLite for tests/CI, PostgreSQL in prod).
+  - Pydantic schemas, repository layer, unit-of-work, service layer, and thin FastAPI
+    routers under `/api/v1` (full create/read/update/delete/list).
+  - Alembic migrations in `database/` (`0001_initial_core_schema`, up/down verified);
+    `just migrate` / `just makemigration` / `just seed`; example seed script.
+  - OpenAPI schema published; contract tests assert the API surface.
+- **Verified locally:** 30 Python tests pass; ruff, mypy strict clean; Alembic upgrade/
+  downgrade works; end-to-end workspace→project→task CRUD confirmed.
+- Docs updated (Current_Status, Milestones, Data_Models) per the docs-with-code rule.
+
+### Fixed — CI pipeline (2026-07-20)
+- Python job: declared ruff/mypy/pytest in a root dev group and switched to
+  `uv sync --all-packages --all-extras` so workspace members' deps install.
+- Web job: removed the duplicate pnpm version (kept `packageManager` as the source).
+
+### Added — Milestone 1: Project Foundation (2026-07-20)
 - **Monorepo skeleton** with real, tested content (no empty folders):
   - `services/api` — FastAPI app factory + `/health` + settings (3 tests).
   - `services/worker` — Celery app + `ping` health task (3 tests).
@@ -55,8 +72,8 @@ first release, changes are tracked under **Unreleased** and grouped by milestone
 | Milestone | Status | Summary |
 |-----------|--------|---------|
 | M0 — Engineering Foundation | ✅ Complete | Design docs + Project Bible + repo scaffolding |
-| M1 — Project Foundation | 🟡 In progress | Monorepo, tooling, compose stack, CI (skeleton + tests + CI done, verified locally) |
-| M2 — Database & API | ⏳ Planned | Domain model + FastAPI CRUD |
+| M1 — Project Foundation | ✅ Complete | Monorepo, tooling, compose stack, CI |
+| M2 — Database & API | 🟡 In progress | Domain model + FastAPI CRUD (Workspace/Project/Task delivered) |
 | M3 — Authentication | ⏳ Planned | Auth, RBAC, secrets, audit |
 | M4 — Notion Integration | ⏳ Planned | Two-way sync; disconnect-safe |
 | M5 — GitHub Integration | ⏳ Planned | Repo/commit/PR/issue sync |

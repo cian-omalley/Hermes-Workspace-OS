@@ -26,6 +26,11 @@ class Settings(BaseSettings):
     # Comma-separated origins; parsed into a list by ``cors_origins``.
     api_cors_origins: str = Field(default="http://localhost:3000")
 
+    # Database connection. Defaults to a local SQLite file so the API can boot with
+    # zero external services in development; the compose stack overrides this with the
+    # PostgreSQL DSN (the production source of record). See Database_Architecture.md.
+    database_url: str = Field(default="sqlite+pysqlite:///./hermes.db")
+
     @property
     def cors_origins(self) -> list[str]:
         return [o.strip() for o in self.api_cors_origins.split(",") if o.strip()]

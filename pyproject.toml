@@ -36,7 +36,8 @@ extend-exclude = ["apps/web", ".venv"]
 [tool.ruff.lint]
 # Reasonable, strict-but-practical default rule set.
 select = ["E", "F", "I", "UP", "B", "SIM", "C4", "PTH", "RUF"]
-ignore = []
+# B008: FastAPI intentionally calls Depends()/Query() in argument defaults.
+ignore = ["B008"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["hermes_domain", "hermes_api", "hermes_worker"]

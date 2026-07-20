@@ -9,9 +9,11 @@ trust.
 
 ### Stage
 **Milestone 0 — Engineering Foundation: COMPLETE.**
-**Milestone 1 — Project Foundation: IN PROGRESS.** The runnable monorepo skeleton now
-exists with passing tests and CI configuration. Domain features (DB, entities, auth) still
-do not exist — those begin at Milestone 2.
+**Milestone 1 — Project Foundation: COMPLETE** (skeleton, tooling, CI — verified).
+**Milestone 2 — Database & API: IN PROGRESS.** The core domain model and a full layered
+CRUD API now exist for the Workspace → Project → Task hierarchy, with Alembic migrations
+and contract tests. Remaining core entities (Document, Repository, Asset, Agent, …) follow
+the same pattern in subsequent PRs; auth (M3) is not yet applied.
 
 ### What exists
 - ✅ 16 numbered design specifications (`docs/00-ROADMAP` … `docs/15-UI_DESIGN`).
@@ -28,12 +30,18 @@ do not exist — those begin at Milestone 2.
 - ✅ **Tooling:** `pyproject.toml` (uv workspace, ruff, mypy strict, pytest), `pnpm`
   workspace, `justfile`, `config/.env.example`.
 - ✅ **CI:** GitHub Actions (Python lint/types/tests, web lint/types/tests, secret scan).
-- ✅ **Verified locally:** 10 Python tests + 6 web tests pass; ruff, mypy strict, tsc,
-  eslint clean; Next.js production build succeeds.
+- ✅ **Domain & API (M2):** SQLAlchemy 2.0 models (Workspace, Project, Task) with portable
+  types; Alembic migration `0001` (up/down verified); Pydantic schemas; repository +
+  unit-of-work; service layer; layered FastAPI routers with full CRUD; OpenAPI published;
+  contract tests; `database/` migrations; seed script.
+- ✅ **Verified locally:** 30 Python tests + 6 web tests pass; ruff, mypy strict, tsc,
+  eslint clean; Next.js production build succeeds; Alembic upgrade/downgrade works;
+  end-to-end workspace→project→task CRUD confirmed.
 
 ### What does NOT exist yet
-- ❌ Domain model / datastore schemas / migrations (M2).
-- ❌ Auth, RBAC, secrets, audit (M3).
+- ❌ Remaining core entities (Document, Repository, Asset, Agent, join/tag tables) — same
+  pattern, later PRs in M2.
+- ❌ Auth, RBAC, secrets, audit (M3) — the API is currently unauthenticated.
 - ❌ Integrations, ingestion, search, graph, agents, dashboard, automation (M4–M11).
 - ❌ Running services verified via full `docker compose up` in CI (images build locally;
   end-to-end compose bring-up is a manual/CI step to add).
@@ -41,8 +49,8 @@ do not exist — those begin at Milestone 2.
 ### System-by-system status
 | System | Status | Milestone |
 |--------|--------|-----------|
-| Project foundation / tooling / CI | 🟡 In progress | M1 |
-| Database & API | ⏳ Planned | M2 |
+| Project foundation / tooling / CI | ✅ Done | M1 |
+| Database & API | 🟡 In progress | M2 |
 | Auth / RBAC / secrets / audit | ⏳ Planned | M3 |
 | Notion integration | ⏳ Planned | M4 |
 | GitHub integration | ⏳ Planned | M5 |
@@ -60,10 +68,10 @@ See `docs/MISSING_INFORMATION.md`. **D10 (create `main`) is resolved.** Highest 
 work (M6+); `.env.example` currently proposes local (Ollama) defaults.
 
 ### Next step
-Finish **Milestone 1** acceptance (verify full `docker compose up` health in CI), then —
-after approval — **Milestone 2 — Database & API**: Alembic + SQLAlchemy models starting
-with the Projects/Tasks reference module, layered FastAPI modules, OpenAPI + generated TS
-client.
+Continue **Milestone 2**: add the remaining core entities (Document, Repository, Asset,
+Agent, join/tag tables) following the Workspace/Project/Task reference pattern, and generate
+the TypeScript client from the OpenAPI schema (the frontend contract seam). Then **Milestone
+3 — Authentication** (Auth.js/JWT, RBAC, encrypted secret vault, audit) before exposing sync.
 
 ## Architecture Decisions
 This file exists to counter the "documentation implies implementation" risk noted in the

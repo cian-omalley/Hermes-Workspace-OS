@@ -12,12 +12,13 @@ disconnected.
 
 ## Current stage (read carefully)
 
-The repository is in **Milestone 1 — Project Foundation (in progress)**. Milestone 0
-(documentation) is complete, and the runnable monorepo skeleton now exists: `services/api`
-(FastAPI + `/health`), `services/worker` (Celery), `apps/web` (Next.js), `packages/
-hermes-domain`, the `docker-compose.yml` stack, tooling (uv/pnpm/ruff/mypy/pytest/eslint/
-tsc/vitest), and GitHub Actions CI. Domain features (projects, tasks, DB, auth, …) do
-**not** exist yet — those begin at Milestone 2. See
+The repository is in **Milestone 2 — Database & API (in progress)**. Milestones 0
+(documentation) and 1 (runnable skeleton + tooling + CI) are complete. M2 has added the
+core domain model and a full layered CRUD API for the **Workspace → Project → Task**
+hierarchy (SQLAlchemy models, Alembic migrations, Pydantic schemas, repository + unit-of-
+work, service layer, FastAPI routers under `/api/v1`, OpenAPI + contract tests). Remaining
+core entities (Document, Repository, Asset, Agent, …) and **authentication (M3)** are not
+built yet — the API is currently unauthenticated. See
 `docs/PROJECT_BIBLE/09_Implementation/Current_Status.md` for the live status.
 
 ## Required reading order

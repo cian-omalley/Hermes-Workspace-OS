@@ -5,8 +5,13 @@ Summarize the core domain entities and their relationships so developers share o
 model. Full DDL-level detail: `docs/05-DATABASE_DESIGN.md`.
 
 ## Current State
-Designed; no SQLAlchemy models or migrations exist yet (M2). This is the entity map to
-implement against.
+**Partially implemented (M2).** The core hierarchy — `workspaces`, `projects`, `tasks` —
+is implemented as SQLAlchemy 2.0 models with an Alembic migration (`database/migrations/
+versions/0001_initial_core_schema.py`) and full CRUD API. The remaining entities below are
+designed and follow the same pattern in subsequent M2 PRs. **Portability note:** models use
+SQLAlchemy's portable types (`Uuid`, `String`, `DateTime`) so the same code runs on SQLite
+(tests/CI) and PostgreSQL (production source of record); Postgres-specific optimizations
+(JSONB, arrays, RLS) are layered in later.
 
 ## Entity groups
 - **Identity & tenancy:** `workspaces`, `users`, `teams`, `user_memberships`,

@@ -5,15 +5,16 @@ Provide the authoritative, at-a-glance milestone list with exit criteria — the
 that define "done" for each increment. Full detail: `docs/00-ROADMAP.md`.
 
 ## Current State
-**M0 complete** (documentation). **M1 in progress** — runnable skeleton, tests, and CI
-exist and pass locally. All others planned.
+**M0 complete** (documentation). **M1 complete** (skeleton, tooling, CI). **M2 in
+progress** — layered CRUD API for Workspace/Project/Task with migrations and tests. All
+others planned.
 
 ## Milestone table
 | # | Name | Status | Exit criteria (definition of done) |
 |---|------|--------|-----------------------------------|
 | 0 | Engineering Foundation | ✅ | Docs + Project Bible + scaffolding reviewed/approved. |
-| 1 | Project Foundation | 🟡 In progress | `docker compose up` → green health; CI passes. Skeleton + tests + CI done and verified locally; full compose bring-up in CI pending. |
-| 2 | Database & API | ⏳ | Full CRUD for core entities w/ tests; OpenAPI published. |
+| 1 | Project Foundation | ✅ | `docker compose up` → green health; CI passes. Skeleton + tests + CI done and verified. |
+| 2 | Database & API | 🟡 In progress | Full CRUD for core entities w/ tests; OpenAPI published. Workspace/Project/Task delivered (models, Alembic, layered API, contract tests); remaining entities + TS client pending. |
 | 3 | Authentication | ⏳ | Protected endpoints; RBAC tests; encrypted secret storage. |
 | 4 | Notion Integration | ⏳ | Round-trip sync (Projects/Tasks); **disconnect test passes**. |
 | 5 | GitHub Integration | ⏳ | Linked repo streams activity; issues↔tasks sync. |

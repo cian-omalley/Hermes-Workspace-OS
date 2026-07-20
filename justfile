@@ -37,6 +37,18 @@ py-install:
 api:
     uv run --package hermes-api uvicorn hermes_api.main:app --reload --host 0.0.0.0 --port 8000
 
+# Apply database migrations (upgrade to head).
+migrate:
+    uv run alembic -c database/alembic.ini upgrade head
+
+# Create a new migration (usage: just makemigration "message").
+makemigration message:
+    uv run alembic -c database/alembic.ini revision -m "{{message}}"
+
+# Seed example data for local development (run after `just migrate`).
+seed:
+    uv run python scripts/seed.py
+
 # Run a Celery worker.
 worker:
     uv run --package hermes-worker celery -A hermes_worker.app worker --loglevel=info

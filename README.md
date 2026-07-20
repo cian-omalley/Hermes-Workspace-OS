@@ -20,7 +20,21 @@ approval gates between milestones.
 
 ## Documentation
 
-The full engineering foundation lives in [`/docs`](./docs):
+**Start here:** [`CLAUDE.md`](./CLAUDE.md) → the **[Project Bible](./docs/PROJECT_BIBLE/)**
+(the permanent source of truth) → [`docs/PROJECT_MAP.md`](./docs/PROJECT_MAP.md) for fast
+orientation.
+
+Repository intelligence & governance:
+
+| Document | Purpose |
+|----------|---------|
+| [Project Bible](./docs/PROJECT_BIBLE/README.md) | Structured source of truth (11 sections, 50+ docs) |
+| [Audit Report](./docs/AUDIT_REPORT.md) | Full repository audit & findings |
+| [Project Map](./docs/PROJECT_MAP.md) | Single-page orientation |
+| [Missing Information](./docs/MISSING_INFORMATION.md) | Open decisions, gaps, risks |
+| [CONTRIBUTING](./CONTRIBUTING.md) · [CHANGELOG](./CHANGELOG.md) | Contribution guide · history |
+
+The deep design **specifications** live in [`/docs`](./docs):
 
 | # | Document | Purpose |
 |---|----------|---------|

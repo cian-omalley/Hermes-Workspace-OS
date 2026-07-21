@@ -5,8 +5,14 @@ Explain how Hermes connects to external tools while preserving its source-of-rec
 guarantee. Integrations are plugins, not special cases.
 
 ## Current State
-Designed; unimplemented. Notion (M4) and GitHub (M5) are the first integrations; both
-implement the same **Integration port** (`docs/06`).
+**Notion is implemented (M4).** A `NotionClient` abstraction (in-memory `FakeNotionClient`
+for tests, real `HttpNotionClient` for production) sits behind a declarative entity↔Notion
+mapping (Projects, Tasks) and a sync engine that is idempotent (checksums + `webhook_events`
+dedup) and conflict-aware (**Hermes wins**). Admin-guarded connect/status/sync endpoints and
+a signature-verified inbound webhook drive it; the Notion token is stored in the encrypted
+vault. The **disconnect-safe** guarantee is tested. GitHub (M5) is next and reuses the same
+`integrations`/`sync_state`/`webhook_events` machinery. Remaining Notion databases (beyond
+Projects/Tasks) follow the same declarative mapping pattern.
 
 ## Principles
 - **Hermes owns the data.** Integrations sync *to/from* Postgres; they never become the

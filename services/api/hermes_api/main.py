@@ -16,8 +16,10 @@ from hermes_api.auth.dependencies import get_current_user, require_workspace_rol
 from hermes_api.auth.roles import Role
 from hermes_api.config import Settings, get_settings
 from hermes_api.db import SessionLocal
+from hermes_api.integrations.deps import default_notion_client_factory
 from hermes_api.routers import (
     ADMIN_ROUTERS,
+    PUBLIC_ROUTERS,
     WORKSPACE_SCOPED_ROUTERS,
     auth_router,
     users_router,
@@ -51,6 +53,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     # Session factory used by request dependencies. Tests set this to a SQLite factory;
     # production uses the configured database.
     app.state.session_factory = SessionLocal
+    # Notion client factory (token -> client). Tests override with a FakeNotionClient.
+    app.state.notion_client_factory = default_notion_client_factory
 
     app.add_middleware(
         CORSMiddleware,
@@ -84,9 +88,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     # Workspace-scoped resources: method-based RBAC (read → viewer, write → editor).
     for router in WORKSPACE_SCOPED_ROUTERS:
         app.include_router(router, dependencies=[Depends(workspace_guard)])
-    # Admin-only workspace resources (secrets, member management).
+    # Admin-only workspace resources (secrets, member management, integrations).
     for router in ADMIN_ROUTERS:
         app.include_router(router, dependencies=[Depends(require_workspace_role(Role.ADMIN))])
+    # Public routers (inbound webhooks; signature-verified, not behind auth).
+    for router in PUBLIC_ROUTERS:
+        app.include_router(router)
 
     return app
 

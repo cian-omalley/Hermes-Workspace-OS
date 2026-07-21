@@ -5,9 +5,9 @@ Provide the authoritative, at-a-glance milestone list with exit criteria — the
 that define "done" for each increment. Full detail: `docs/00-ROADMAP.md`.
 
 ## Current State
-**M0–M3 complete.** M2 delivered the full CRUD API + generated TS client; M3 added JWT
-auth, RBAC, an encrypted secret vault, and audit logging. **M4 (Notion Integration) is
-next.** All others planned.
+**M0–M4 complete.** M3 added JWT auth, RBAC, a secret vault, and audit logging; M4 added
+two-way Notion sync (Projects/Tasks), idempotent and conflict-aware, with the disconnect-
+safe guarantee tested. **M5 (GitHub Integration) is next.** All others planned.
 
 ## Milestone table
 | # | Name | Status | Exit criteria (definition of done) |
@@ -16,7 +16,7 @@ next.** All others planned.
 | 1 | Project Foundation | ✅ | `docker compose up` → green health; CI passes. Skeleton + tests + CI done and verified. |
 | 2 | Database & API | ✅ | Full CRUD for all core entities w/ tests; OpenAPI published; generated TS client (drift-checked in CI). |
 | 3 | Authentication | ✅ | Protected endpoints (JWT); RBAC role tests; encrypted secret storage; audit log. |
-| 4 | Notion Integration | ⏳ | Round-trip sync (Projects/Tasks); **disconnect test passes**. |
+| 4 | Notion Integration | ✅ | Round-trip Projects/Tasks sync (idempotent, Hermes-wins conflicts); **disconnect test passes**. |
 | 5 | GitHub Integration | ⏳ | Linked repo streams activity; issues↔tasks sync. |
 | 6 | File Ingestion | ⏳ | Upload PDF → summary, tags, embeddings, relations, doc. |
 | 7 | Search System | ⏳ | One query → fused, permission-scoped results across sources. |

@@ -10,11 +10,13 @@ from hermes_api.models.agent import Agent
 from hermes_api.models.asset import Asset
 from hermes_api.models.audit import AuditLog
 from hermes_api.models.document import Document
+from hermes_api.models.integration import Integration
 from hermes_api.models.membership import Membership
 from hermes_api.models.project import Project
 from hermes_api.models.repository import Repository
 from hermes_api.models.research import ResearchItem
 from hermes_api.models.secret import Secret
+from hermes_api.models.sync import SyncLog, SyncState, WebhookEvent
 from hermes_api.models.tag import Tag, TagLink
 from hermes_api.models.task import Task
 from hermes_api.models.user import User
@@ -25,14 +27,18 @@ __all__ = [
     "Asset",
     "AuditLog",
     "Document",
+    "Integration",
     "Membership",
     "Project",
     "Repository",
     "ResearchItem",
     "Secret",
+    "SyncLog",
+    "SyncState",
     "Tag",
     "TagLink",
     "Task",
     "User",
+    "WebhookEvent",
     "Workspace",
 ]

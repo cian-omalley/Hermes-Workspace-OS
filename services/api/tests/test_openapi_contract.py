@@ -25,6 +25,10 @@ def test_core_paths_present(client: TestClient) -> None:
     assert "/api/v1/auth/me" in paths
     assert "/api/v1/workspaces/{workspace_id}/members" in paths
     assert "/api/v1/workspaces/{workspace_id}/secrets" in paths
+    # Notion integration (Milestone 4).
+    assert "/api/v1/workspaces/{workspace_id}/integrations/notion/connect" in paths
+    assert "/api/v1/workspaces/{workspace_id}/integrations/notion/sync" in paths
+    assert "/webhooks/notion/{workspace_id}" in paths
 
 
 def test_crud_methods_declared(client: TestClient) -> None:

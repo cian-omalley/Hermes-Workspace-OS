@@ -13,8 +13,10 @@ trust.
 **Milestone 2 — Database & API: COMPLETE.** Full layered CRUD API for all core entities
 with Alembic migrations, contract tests, and a generated, drift-checked TypeScript client.
 **Milestone 3 — Authentication & Authorization: COMPLETE.** The API is now authenticated
-(JWT) and RBAC-enforced, with an encrypted secret vault and audit logging. **Milestone 4 —
-Notion Integration is next.**
+(JWT) and RBAC-enforced, with an encrypted secret vault and audit logging.
+**Milestone 4 — Notion Integration: COMPLETE.** Two-way Projects/Tasks sync behind an
+in-memory-testable Notion client, idempotent and conflict-aware (Hermes wins), with the
+headline **disconnect-safe** guarantee tested. **Milestone 5 — GitHub Integration is next.**
 
 ### What exists
 - ✅ 16 numbered design specifications (`docs/00-ROADMAP` … `docs/15-UI_DESIGN`).
@@ -43,12 +45,22 @@ Notion Integration is next.**
   owner/admin/editor/viewer roles, method-based + fixed-role guards, encrypted secret vault
   (Fernet), and audit logging within the unit of work. Migration `0003`; auth/RBAC/secret
   tests. Details in `02_Architecture/Security_Model.md`.
-- ✅ **Verified locally:** 69 Python tests + 6 web tests + 1 client test pass; ruff, mypy
-  strict, tsc, eslint clean; Alembic up/down (0001–0003) works; client regeneration is
+- ✅ **Notion integration (M4):** an `Integration` port with a `NotionClient` abstraction
+  (in-memory `FakeNotionClient` for tests, real `HttpNotionClient` for production); a
+  declarative entity↔Notion mapping (Projects, Tasks); a sync engine (outbound + inbound)
+  that is idempotent (checksums, `webhook_events` dedup) and conflict-aware (**Hermes
+  wins**); admin-guarded connect/status/sync endpoints + a signature-verified inbound
+  webhook; the Notion token stored in the encrypted vault. Migration `0004`
+  (`integrations`, `sync_state`, `webhook_events`, `sync_log`). The **disconnect-safe**
+  test passes: core CRUD works with Notion absent/disconnected.
+- ✅ **Verified locally:** 81 Python tests + 6 web tests + 1 client test pass; ruff, mypy
+  strict, tsc, eslint clean; Alembic up/down (0001–0004) works; client regeneration is
   deterministic (no drift).
 
 ### What does NOT exist yet
-- ❌ External integrations: Notion (M4), GitHub (M5).
+- ❌ External integrations: GitHub (M5). Notion maps Projects/Tasks; the remaining 8 Notion
+  databases follow the same declarative pattern. The real `HttpNotionClient` needs a live
+  smoke test (CI exercises the fake + mocked-transport unit tests).
 - ❌ Authentik OIDC and the Next.js Auth.js **login UI** (backend JWT contract exists; UI
   lands with the M10 dashboard).
 - ❌ Postgres-specific features (JSONB/arrays/RLS), document version history, richer agent
@@ -64,7 +76,7 @@ Notion Integration is next.**
 | Project foundation / tooling / CI | ✅ Done | M1 |
 | Database & API (+ TS client) | ✅ Done | M2 |
 | Auth / RBAC / secrets / audit | ✅ Done | M3 |
-| Notion integration | ⏳ Planned | M4 |
+| Notion integration | ✅ Done | M4 |
 | GitHub integration | ⏳ Planned | M5 |
 | File ingestion | ⏳ Planned | M6 |
 | Search | ⏳ Planned | M7 |
@@ -80,10 +92,9 @@ See `docs/MISSING_INFORMATION.md`. **D10 (create `main`) is resolved.** Highest 
 work (M6+); `.env.example` currently proposes local (Ollama) defaults.
 
 ### Next step
-**Milestone 4 — Notion Integration**: implement the Integration plugin + two-way sync
-engine (outbound via events, inbound via webhook/poll), mapping the core entities to Notion
-databases, with conflict resolution and the headline **disconnect-safe** test — all now
-behind the M3 authentication/RBAC layer.
+**Milestone 5 — GitHub Integration**: link repositories to projects; sync commits, PRs, and
+issues (issue ↔ task); feed commit/PR analysis into the pipeline; reuse the same
+Integration/sync-state machinery built for Notion in M4.
 
 ## Architecture Decisions
 This file exists to counter the "documentation implies implementation" risk noted in the

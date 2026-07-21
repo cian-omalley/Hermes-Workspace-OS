@@ -12,13 +12,14 @@ disconnected.
 
 ## Current stage (read carefully)
 
-Milestones 0–3 are complete. **Milestone 4 — Notion Integration is next.** M2 delivered the
-full layered CRUD API for all core entities plus a **generated TypeScript client**
-(`packages/ts-client`, drift-checked in CI). M3 added **authentication & authorization**:
-JWT auth (register/login/me, bcrypt), workspace **RBAC** (owner/admin/editor/viewer) via
-membership guards, an **encrypted secret vault** (Fernet), and **audit logging** — so the
-API is now authenticated and role-enforced. The Next.js Auth.js **login UI** is deferred to
-the M10 dashboard (the backend JWT contract exists). See
+Milestones 0–4 are complete. **Milestone 5 — GitHub Integration is next.** M2 delivered the
+full CRUD API + **generated TypeScript client** (`packages/ts-client`, drift-checked in CI).
+M3 added **auth & RBAC** (JWT, owner/admin/editor/viewer membership guards, encrypted secret
+vault, audit logging). M4 added the **Notion integration**: a `NotionClient` abstraction
+(in-memory fake for tests, real HTTP client for production), a declarative entity↔Notion
+mapping (Projects/Tasks), and a two-way sync engine that is idempotent and conflict-aware
+(**Hermes wins**), with the headline **disconnect-safe** guarantee tested. The Next.js
+Auth.js **login UI** is deferred to the M10 dashboard. See
 `docs/PROJECT_BIBLE/09_Implementation/Current_Status.md` for the live status.
 
 ## Required reading order

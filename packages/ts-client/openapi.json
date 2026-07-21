@@ -647,6 +647,36 @@
         "title": "HealthResponse",
         "type": "object"
       },
+      "IntegrationStatusRead": {
+        "properties": {
+          "connected": {
+            "title": "Connected",
+            "type": "boolean"
+          },
+          "databases": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Databases",
+            "type": "object"
+          },
+          "provider": {
+            "title": "Provider",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "provider",
+          "status",
+          "connected"
+        ],
+        "title": "IntegrationStatusRead",
+        "type": "object"
+      },
       "LoginRequest": {
         "properties": {
           "email": {
@@ -738,6 +768,69 @@
           "role"
         ],
         "title": "MemberRoleUpdate",
+        "type": "object"
+      },
+      "NotionConnectRequest": {
+        "properties": {
+          "databases": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Map of database key ('projects','tasks',\u2026) to Notion database id.",
+            "title": "Databases",
+            "type": "object"
+          },
+          "token": {
+            "description": "Notion integration token (stored encrypted).",
+            "minLength": 1,
+            "title": "Token",
+            "type": "string"
+          },
+          "webhook_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional shared secret verified on inbound webhooks.",
+            "title": "Webhook Secret"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "title": "NotionConnectRequest",
+        "type": "object"
+      },
+      "NotionWebhookEvent": {
+        "description": "Simplified inbound webhook contract (a real receiver translates Notion's payload).",
+        "properties": {
+          "event_id": {
+            "minLength": 1,
+            "title": "Event Id",
+            "type": "string"
+          },
+          "external_id": {
+            "minLength": 1,
+            "title": "External Id",
+            "type": "string"
+          },
+          "properties": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Properties",
+            "type": "object"
+          }
+        },
+        "required": [
+          "event_id",
+          "external_id"
+        ],
+        "title": "NotionWebhookEvent",
         "type": "object"
       },
       "ProjectCreate": {
@@ -1431,6 +1524,34 @@
           "value"
         ],
         "title": "SecretValueRead",
+        "type": "object"
+      },
+      "SyncResultRead": {
+        "properties": {
+          "conflicts": {
+            "title": "Conflicts",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          },
+          "unchanged": {
+            "title": "Unchanged",
+            "type": "integer"
+          },
+          "updated": {
+            "title": "Updated",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "created",
+          "updated",
+          "unchanged",
+          "conflicts"
+        ],
+        "title": "SyncResultRead",
         "type": "object"
       },
       "TagAttach": {
@@ -3460,6 +3581,206 @@
         "summary": "Update Document",
         "tags": [
           "documents"
+        ]
+      }
+    },
+    "/api/v1/workspaces/{workspace_id}/integrations/notion": {
+      "delete": {
+        "operationId": "disconnect_api_v1_workspaces__workspace_id__integrations_notion_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Workspace Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationStatusRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Disconnect",
+        "tags": [
+          "integrations"
+        ]
+      },
+      "get": {
+        "operationId": "get_status_api_v1_workspaces__workspace_id__integrations_notion_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Workspace Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationStatusRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Status",
+        "tags": [
+          "integrations"
+        ]
+      }
+    },
+    "/api/v1/workspaces/{workspace_id}/integrations/notion/connect": {
+      "post": {
+        "operationId": "connect_api_v1_workspaces__workspace_id__integrations_notion_connect_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Workspace Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotionConnectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationStatusRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Connect",
+        "tags": [
+          "integrations"
+        ]
+      }
+    },
+    "/api/v1/workspaces/{workspace_id}/integrations/notion/sync": {
+      "post": {
+        "operationId": "sync_outbound_api_v1_workspaces__workspace_id__integrations_notion_sync_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Workspace Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncResultRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Sync Outbound",
+        "tags": [
+          "integrations"
         ]
       }
     },
@@ -5568,6 +5889,79 @@
         "summary": "Health",
         "tags": [
           "system"
+        ]
+      }
+    },
+    "/webhooks/notion/{workspace_id}": {
+      "post": {
+        "operationId": "notion_webhook_webhooks_notion__workspace_id__post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Workspace Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-hermes-webhook-secret",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Hermes-Webhook-Secret"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotionWebhookEvent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Notion Webhook Webhooks Notion  Workspace Id  Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Notion Webhook",
+        "tags": [
+          "webhooks"
         ]
       }
     }

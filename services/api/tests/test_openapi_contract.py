@@ -20,6 +20,11 @@ def test_core_paths_present(client: TestClient) -> None:
     for segment in ("documents", "research", "repositories", "assets", "agents", "tags"):
         assert f"/api/v1/workspaces/{{workspace_id}}/{segment}" in paths
     assert "/api/v1/workspaces/{workspace_id}/tags/{tag_id}/links" in paths
+    # Auth & RBAC (Milestone 3).
+    assert "/api/v1/auth/login" in paths
+    assert "/api/v1/auth/me" in paths
+    assert "/api/v1/workspaces/{workspace_id}/members" in paths
+    assert "/api/v1/workspaces/{workspace_id}/secrets" in paths
 
 
 def test_crud_methods_declared(client: TestClient) -> None:

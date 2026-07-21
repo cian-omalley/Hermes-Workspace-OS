@@ -12,13 +12,13 @@ disconnected.
 
 ## Current stage (read carefully)
 
-Milestones 0–2 are complete. **Milestone 3 — Authentication is next.** M2 delivered the
-core domain model and a full layered CRUD API for all core entities (Workspace, Project,
-Task, User, Document, Research, Repository, Asset, Agent, Tags) — SQLAlchemy models, Alembic
-migrations, Pydantic schemas, repository + unit-of-work, a generic `CrudService` base,
-FastAPI routers under `/api/v1`, OpenAPI, contract tests, and a **generated TypeScript
-client** (`packages/ts-client`, drift-checked in CI). **Authentication/RBAC (M3)** is not
-built yet — the API is currently unauthenticated. See
+Milestones 0–3 are complete. **Milestone 4 — Notion Integration is next.** M2 delivered the
+full layered CRUD API for all core entities plus a **generated TypeScript client**
+(`packages/ts-client`, drift-checked in CI). M3 added **authentication & authorization**:
+JWT auth (register/login/me, bcrypt), workspace **RBAC** (owner/admin/editor/viewer) via
+membership guards, an **encrypted secret vault** (Fernet), and **audit logging** — so the
+API is now authenticated and role-enforced. The Next.js Auth.js **login UI** is deferred to
+the M10 dashboard (the backend JWT contract exists). See
 `docs/PROJECT_BIBLE/09_Implementation/Current_Status.md` for the live status.
 
 ## Required reading order

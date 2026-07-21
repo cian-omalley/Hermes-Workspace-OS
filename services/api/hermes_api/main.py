@@ -7,13 +7,22 @@ from Milestone 2. See ``docs/PROJECT_BIBLE/04_Integrations/API_Design.md``.
 
 from __future__ import annotations
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from hermes_api import __version__
+from hermes_api.auth.dependencies import get_current_user, require_workspace_role, workspace_guard
+from hermes_api.auth.roles import Role
 from hermes_api.config import Settings, get_settings
-from hermes_api.routers import ALL_ROUTERS
+from hermes_api.db import SessionLocal
+from hermes_api.routers import (
+    ADMIN_ROUTERS,
+    WORKSPACE_SCOPED_ROUTERS,
+    auth_router,
+    users_router,
+    workspaces_router,
+)
 
 
 class HealthResponse(BaseModel):
@@ -39,6 +48,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         summary="Self-hostable AI Workspace Operating System — core API.",
     )
 
+    # Session factory used by request dependencies. Tests set this to a SQLite factory;
+    # production uses the configured database.
+    app.state.session_factory = SessionLocal
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
@@ -62,9 +75,18 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         """Friendly root pointing at the API docs."""
         return {"name": "Hermes Workspace OS API", "docs": "/docs", "health": "/health"}
 
-    # Core domain routers (Milestone 2), registered in dependency order.
-    for router in ALL_ROUTERS:
-        app.include_router(router)
+    # Public auth routes (register/login; /auth/me self-guards).
+    app.include_router(auth_router)
+    # Workspaces: create/list require auth; per-workspace routes are role-gated in-router.
+    app.include_router(workspaces_router)
+    # Users require authentication.
+    app.include_router(users_router, dependencies=[Depends(get_current_user)])
+    # Workspace-scoped resources: method-based RBAC (read → viewer, write → editor).
+    for router in WORKSPACE_SCOPED_ROUTERS:
+        app.include_router(router, dependencies=[Depends(workspace_guard)])
+    # Admin-only workspace resources (secrets, member management).
+    for router in ADMIN_ROUTERS:
+        app.include_router(router, dependencies=[Depends(require_workspace_role(Role.ADMIN))])
 
     return app
 

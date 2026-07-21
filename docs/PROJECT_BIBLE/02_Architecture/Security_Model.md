@@ -5,8 +5,21 @@ Define how Hermes protects data, controls access, manages secrets, and constrain
 Security is a design strength that must become an implemented reality.
 
 ## Current State
-**Designed, not implemented.** No auth, RBAC, secret encryption, or audit exists in code
-yet (arrives M3). No secrets are committed (verified: only `.gitignore` guards `.env`).
+**Implemented (Milestone 3).** The API is authenticated and RBAC-enforced:
+- **AuthN:** local credential auth (bcrypt password hashing) issuing signed **JWT** access
+  tokens verified at the gateway (`HTTPBearer`); the same seam accepts an external IdP's
+  token (Auth.js / Authentik OIDC) later.
+- **AuthZ / RBAC:** workspace **memberships** with roles owner/admin/editor/viewer; a
+  method-based `workspace_guard` (read→viewer, write→editor) plus fixed-role guards
+  (admin for secrets/members, owner to delete a workspace). Non-members get 404 (existence
+  not leaked).
+- **Secret vault:** provider values are **envelope-encrypted** (Fernet keyed off
+  `HERMES_ENCRYPTION_KEY`); only ciphertext is stored, list/read never expose plaintext,
+  and reveal is admin-only.
+- **Audit log:** mutating actions are recorded in `audit_log` **within the request's unit
+  of work** (atomic with the action).
+No secrets are committed (verified). The Next.js Auth.js login UI lands with the dashboard
+(M10); the backend JWT contract it will consume exists now.
 
 ## Layers
 | Layer | Control |

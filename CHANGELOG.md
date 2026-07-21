@@ -8,6 +8,29 @@ first release, changes are tracked under **Unreleased** and grouped by milestone
 
 ## [Unreleased]
 
+### Added — Milestone 3: Authentication & Authorization (2026-07-20)
+- **JWT authentication:** `POST /api/v1/auth/register` + `/login` (bcrypt password hashing)
+  issuing signed access tokens; `GET /api/v1/auth/me`; `HTTPBearer` verification at the
+  gateway. The same seam accepts an external IdP token (Auth.js / Authentik OIDC) later.
+- **RBAC:** workspace **memberships** (owner/admin/editor/viewer) with a method-based
+  `workspace_guard` (read→viewer, write→editor), fixed-role guards (admin for secrets &
+  member management, owner to delete a workspace), and member-scoped workspace listing.
+  Non-members receive 404 (existence not leaked). Member-management endpoints under
+  `/workspaces/{id}/members`.
+- **Encrypted secret vault:** `/workspaces/{id}/secrets` — values envelope-encrypted with
+  Fernet (`HERMES_ENCRYPTION_KEY`); only ciphertext stored, list/read never expose
+  plaintext, reveal is admin-only.
+- **Audit logging:** mutating actions recorded in `audit_log` **within the request's unit
+  of work** (atomic; rolls back with a failed action) — chosen over a response middleware,
+  which conflicted with the open request transaction.
+- **Alembic migration `0003`** (up/down verified): `password_hash`, `user_memberships`,
+  `secrets`, `audit_log`.
+- Regenerated the TypeScript client (auth endpoints + bearer security scheme).
+- **Verified locally:** 69 Python tests + 6 web + 1 client test pass; ruff, mypy strict,
+  tsc, eslint clean; migrations up/down; client regeneration deterministic (no drift).
+- **Scoping note:** the Next.js Auth.js login UI is deferred to the M10 dashboard; the
+  backend JWT contract it consumes exists now.
+
 ### Added — Milestone 2: remaining entities + TypeScript client (2026-07-20)
 - **Remaining core entities** with full CRUD, following the reference pattern: `User`
   (top-level), and workspace-scoped `Document`, `ResearchItem`, `Repository`, `Asset`,
@@ -87,7 +110,7 @@ first release, changes are tracked under **Unreleased** and grouped by milestone
 | M0 — Engineering Foundation | ✅ Complete | Design docs + Project Bible + repo scaffolding |
 | M1 — Project Foundation | ✅ Complete | Monorepo, tooling, compose stack, CI |
 | M2 — Database & API | ✅ Complete | Domain model + FastAPI CRUD (all core entities) + generated TS client |
-| M3 — Authentication | ⏳ Planned | Auth, RBAC, secrets, audit |
+| M3 — Authentication | ✅ Complete | JWT auth, RBAC, encrypted secret vault, audit log |
 | M4 — Notion Integration | ⏳ Planned | Two-way sync; disconnect-safe |
 | M5 — GitHub Integration | ⏳ Planned | Repo/commit/PR/issue sync |
 | M6 — File Ingestion | ⏳ Planned | Automatic processing pipeline |

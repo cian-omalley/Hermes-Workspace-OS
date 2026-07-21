@@ -31,6 +31,16 @@ class Settings(BaseSettings):
     # PostgreSQL DSN (the production source of record). See Database_Architecture.md.
     database_url: str = Field(default="sqlite+pysqlite:///./hermes.db")
 
+    # --- Auth (Milestone 3) ---
+    # Signs/verifies access tokens. MUST be overridden in production (see .env.example).
+    hermes_secret_key: str = Field(default="dev-insecure-secret-key-change-me-in-production")
+    jwt_algorithm: str = Field(default="HS256")
+    access_token_expire_minutes: int = Field(default=60 * 24)
+
+    # Key material for the encrypted secret vault (envelope encryption of provider keys).
+    # MUST be overridden in production. See Security_Model.md.
+    hermes_encryption_key: str = Field(default="dev-insecure-encryption-key")
+
     @property
     def cors_origins(self) -> list[str]:
         return [o.strip() for o in self.api_cors_origins.split(",") if o.strip()]

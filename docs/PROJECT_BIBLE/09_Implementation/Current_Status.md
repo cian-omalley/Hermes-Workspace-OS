@@ -10,11 +10,11 @@ trust.
 ### Stage
 **Milestone 0 — Engineering Foundation: COMPLETE.**
 **Milestone 1 — Project Foundation: COMPLETE** (skeleton, tooling, CI — verified).
-**Milestone 2 — Database & API: COMPLETE.** The core domain model and a full layered CRUD
-API exist for all core entities (Workspace, Project, Task, User, Document, Research,
-Repository, Asset, Agent, Tags + tag links), with Alembic migrations, contract tests, and a
-**generated TypeScript client** (the frontend/backend contract seam, drift-checked in CI).
-Authentication (M3) is the next step — the API is currently unauthenticated.
+**Milestone 2 — Database & API: COMPLETE.** Full layered CRUD API for all core entities
+with Alembic migrations, contract tests, and a generated, drift-checked TypeScript client.
+**Milestone 3 — Authentication & Authorization: COMPLETE.** The API is now authenticated
+(JWT) and RBAC-enforced, with an encrypted secret vault and audit logging. **Milestone 4 —
+Notion Integration is next.**
 
 ### What exists
 - ✅ 16 numbered design specifications (`docs/00-ROADMAP` … `docs/15-UI_DESIGN`).
@@ -39,12 +39,18 @@ Authentication (M3) is the next step — the API is currently unauthenticated.
 - ✅ **Generated TS client (`packages/ts-client`):** `openapi.json` + `schema.d.ts` generated
   from the API via `openapi-typescript`, a typed `openapi-fetch` wrapper, and a **CI drift
   check** that fails if the committed client diverges from the API.
-- ✅ **Verified locally:** 55 Python tests + 6 web tests + 1 client test pass; ruff, mypy
-  strict, tsc, eslint clean; Alembic up/down works; client regeneration is deterministic
-  (no drift); end-to-end CRUD confirmed.
+- ✅ **Auth & RBAC (M3):** JWT auth (register/login/me, bcrypt), workspace memberships with
+  owner/admin/editor/viewer roles, method-based + fixed-role guards, encrypted secret vault
+  (Fernet), and audit logging within the unit of work. Migration `0003`; auth/RBAC/secret
+  tests. Details in `02_Architecture/Security_Model.md`.
+- ✅ **Verified locally:** 69 Python tests + 6 web tests + 1 client test pass; ruff, mypy
+  strict, tsc, eslint clean; Alembic up/down (0001–0003) works; client regeneration is
+  deterministic (no drift).
 
 ### What does NOT exist yet
-- ❌ Auth, RBAC, secrets, audit (M3) — the API is currently unauthenticated.
+- ❌ External integrations: Notion (M4), GitHub (M5).
+- ❌ Authentik OIDC and the Next.js Auth.js **login UI** (backend JWT contract exists; UI
+  lands with the M10 dashboard).
 - ❌ Postgres-specific features (JSONB/arrays/RLS), document version history, richer agent
   tables — layered in later milestones.
 - ❌ The web app does not yet consume `@hermes/ts-client` (wired up in the M10 dashboard).
@@ -57,7 +63,7 @@ Authentication (M3) is the next step — the API is currently unauthenticated.
 |--------|--------|-----------|
 | Project foundation / tooling / CI | ✅ Done | M1 |
 | Database & API (+ TS client) | ✅ Done | M2 |
-| Auth / RBAC / secrets / audit | ⏳ Planned | M3 |
+| Auth / RBAC / secrets / audit | ✅ Done | M3 |
 | Notion integration | ⏳ Planned | M4 |
 | GitHub integration | ⏳ Planned | M5 |
 | File ingestion | ⏳ Planned | M6 |
@@ -74,9 +80,10 @@ See `docs/MISSING_INFORMATION.md`. **D10 (create `main`) is resolved.** Highest 
 work (M6+); `.env.example` currently proposes local (Ollama) defaults.
 
 ### Next step
-**Milestone 3 — Authentication**: Auth.js/JWT verification at the gateway, optional
-Authentik OIDC, RBAC in the service layer (workspace/project roles), an encrypted secret
-vault, and audit logging — applied before any external sync (M4/M5).
+**Milestone 4 — Notion Integration**: implement the Integration plugin + two-way sync
+engine (outbound via events, inbound via webhook/poll), mapping the core entities to Notion
+databases, with conflict resolution and the headline **disconnect-safe** test — all now
+behind the M3 authentication/RBAC layer.
 
 ## Architecture Decisions
 This file exists to counter the "documentation implies implementation" risk noted in the

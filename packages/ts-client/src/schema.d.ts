@@ -260,6 +260,58 @@ export interface paths {
         patch: operations["update_document_api_v1_workspaces__workspace_id__documents__document_id__patch"];
         trace?: never;
     };
+    "/api/v1/workspaces/{workspace_id}/integrations/notion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Status */
+        get: operations["get_status_api_v1_workspaces__workspace_id__integrations_notion_get"];
+        put?: never;
+        post?: never;
+        /** Disconnect */
+        delete: operations["disconnect_api_v1_workspaces__workspace_id__integrations_notion_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspaces/{workspace_id}/integrations/notion/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Connect */
+        post: operations["connect_api_v1_workspaces__workspace_id__integrations_notion_connect_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workspaces/{workspace_id}/integrations/notion/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sync Outbound */
+        post: operations["sync_outbound_api_v1_workspaces__workspace_id__integrations_notion_sync_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/workspaces/{workspace_id}/members": {
         parameters: {
             query?: never;
@@ -588,6 +640,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/webhooks/notion/{workspace_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Notion Webhook */
+        post: operations["notion_webhook_webhooks_notion__workspace_id__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -807,6 +876,19 @@ export interface components {
             /** Version */
             version: string;
         };
+        /** IntegrationStatusRead */
+        IntegrationStatusRead: {
+            /** Connected */
+            connected: boolean;
+            /** Databases */
+            databases?: {
+                [key: string]: string;
+            };
+            /** Provider */
+            provider: string;
+            /** Status */
+            status: string;
+        };
         /** LoginRequest */
         LoginRequest: {
             /**
@@ -857,6 +939,40 @@ export interface components {
         /** MemberRoleUpdate */
         MemberRoleUpdate: {
             role: components["schemas"]["Role"];
+        };
+        /** NotionConnectRequest */
+        NotionConnectRequest: {
+            /**
+             * Databases
+             * @description Map of database key ('projects','tasks',…) to Notion database id.
+             */
+            databases?: {
+                [key: string]: string;
+            };
+            /**
+             * Token
+             * @description Notion integration token (stored encrypted).
+             */
+            token: string;
+            /**
+             * Webhook Secret
+             * @description Optional shared secret verified on inbound webhooks.
+             */
+            webhook_secret?: string | null;
+        };
+        /**
+         * NotionWebhookEvent
+         * @description Simplified inbound webhook contract (a real receiver translates Notion's payload).
+         */
+        NotionWebhookEvent: {
+            /** Event Id */
+            event_id: string;
+            /** External Id */
+            external_id: string;
+            /** Properties */
+            properties?: {
+                [key: string]: string;
+            };
         };
         /** ProjectCreate */
         ProjectCreate: {
@@ -1117,6 +1233,17 @@ export interface components {
             name: string;
             /** Value */
             value: string;
+        };
+        /** SyncResultRead */
+        SyncResultRead: {
+            /** Conflicts */
+            conflicts: number;
+            /** Created */
+            created: number;
+            /** Unchanged */
+            unchanged: number;
+            /** Updated */
+            updated: number;
         };
         /**
          * TagAttach
@@ -2265,6 +2392,134 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DocumentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_status_api_v1_workspaces__workspace_id__integrations_notion_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IntegrationStatusRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    disconnect_api_v1_workspaces__workspace_id__integrations_notion_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IntegrationStatusRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    connect_api_v1_workspaces__workspace_id__integrations_notion_connect_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NotionConnectRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IntegrationStatusRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sync_outbound_api_v1_workspaces__workspace_id__integrations_notion_sync_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SyncResultRead"];
                 };
             };
             /** @description Validation Error */
@@ -3478,6 +3733,45 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HealthResponse"];
+                };
+            };
+        };
+    };
+    notion_webhook_webhooks_notion__workspace_id__post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-hermes-webhook-secret"?: string | null;
+            };
+            path: {
+                workspace_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NotionWebhookEvent"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

@@ -93,3 +93,18 @@ class AgentStatus(StrEnum):
     SCHEDULED = "scheduled"
     RUNNING = "running"
     DISABLED = "disabled"
+
+
+class IntegrationProvider(StrEnum):
+    NOTION = "notion"
+    GITHUB = "github"
+
+
+class IntegrationStatus(StrEnum):
+    CONNECTED = "connected"
+    DISCONNECTED = "disconnected"
+
+
+class SyncDirection(StrEnum):
+    OUTBOUND = "outbound"
+    INBOUND = "inbound"

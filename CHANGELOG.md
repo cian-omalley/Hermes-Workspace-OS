@@ -8,6 +8,26 @@ first release, changes are tracked under **Unreleased** and grouped by milestone
 
 ## [Unreleased]
 
+### Added — Milestone 4: Notion Integration (2026-07-21)
+- **Notion client abstraction:** a `NotionClient` protocol with an in-memory
+  `FakeNotionClient` (tests/dev) and a real `HttpNotionClient` over Notion's REST API
+  (mocked-transport unit tests; needs a live smoke test).
+- **Declarative mapping** of Projects and Tasks to Notion databases; remaining databases
+  follow the same pattern.
+- **Two-way sync engine:** outbound (Hermes → Notion) and inbound (Notion → Hermes),
+  **idempotent** (content checksums + `webhook_events` dedup) and **conflict-aware**
+  (default **Hermes wins**: an inbound change is skipped if Hermes changed since the last
+  sync). Runs inside the request's unit of work.
+- **Endpoints:** admin-guarded `connect` / `status` / `sync` / `disconnect` under
+  `/workspaces/{id}/integrations/notion`, and a signature-verified public inbound webhook
+  `POST /webhooks/notion/{workspace_id}`. The Notion token is stored in the encrypted vault.
+- **Disconnect-safe (headline guarantee):** core CRUD works with Notion absent or
+  disconnected; sync is refused with 409 when not connected — all tested.
+- **Alembic migration `0004`** (`integrations`, `sync_state`, `webhook_events`, `sync_log`;
+  up/down verified). Regenerated the TS client (integration + webhook endpoints).
+- **Verified locally:** 81 Python + 6 web + 1 client tests pass; ruff, mypy strict, tsc,
+  eslint clean; migrations up/down; client regeneration deterministic (no drift).
+
 ### Added — Milestone 3: Authentication & Authorization (2026-07-20)
 - **JWT authentication:** `POST /api/v1/auth/register` + `/login` (bcrypt password hashing)
   issuing signed access tokens; `GET /api/v1/auth/me`; `HTTPBearer` verification at the
@@ -111,7 +131,7 @@ first release, changes are tracked under **Unreleased** and grouped by milestone
 | M1 — Project Foundation | ✅ Complete | Monorepo, tooling, compose stack, CI |
 | M2 — Database & API | ✅ Complete | Domain model + FastAPI CRUD (all core entities) + generated TS client |
 | M3 — Authentication | ✅ Complete | JWT auth, RBAC, encrypted secret vault, audit log |
-| M4 — Notion Integration | ⏳ Planned | Two-way sync; disconnect-safe |
+| M4 — Notion Integration | ✅ Complete | Two-way Projects/Tasks sync; idempotent + Hermes-wins; disconnect-safe |
 | M5 — GitHub Integration | ⏳ Planned | Repo/commit/PR/issue sync |
 | M6 — File Ingestion | ⏳ Planned | Automatic processing pipeline |
 | M7 — Search System | ⏳ Planned | Hybrid semantic + keyword |

@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import NullPool
 
 from hermes_api.db import Base
+from hermes_api.integrations.notion.client import FakeNotionClient
 from hermes_api.main import create_app
 from hermes_api.uow import UnitOfWork, get_uow
 
@@ -109,3 +110,11 @@ def project_id(client: TestClient, workspace_id: str) -> str:
     )
     assert resp.status_code == 201, resp.text
     return str(resp.json()["id"])
+
+
+@pytest.fixture
+def fake_notion(app_client: TestClient) -> FakeNotionClient:
+    """Install an in-memory Notion client so sync runs with no network."""
+    fake = FakeNotionClient()
+    app_client.app.state.notion_client_factory = lambda _token: fake  # type: ignore[attr-defined]
+    return fake

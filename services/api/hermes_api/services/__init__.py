@@ -9,6 +9,7 @@ from hermes_api.services.content import (
 )
 from hermes_api.services.crud import CrudService
 from hermes_api.services.errors import ConflictError, NotFoundError
+from hermes_api.services.integration import IntegrationService
 from hermes_api.services.membership import MembershipService
 from hermes_api.services.project import ProjectService
 from hermes_api.services.secret import SecretService, SecretVault
@@ -23,6 +24,7 @@ __all__ = [
     "ConflictError",
     "CrudService",
     "DocumentService",
+    "IntegrationService",
     "MembershipService",
     "NotFoundError",
     "ProjectService",

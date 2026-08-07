@@ -25,11 +25,16 @@ Auth.js **login UI** is deferred to the M10 dashboard. See
 ## Required reading order
 
 1. `CLAUDE.md` (this file)
-2. `docs/PROJECT_BIBLE/10_Claude_Code/Instructions.md` — **how you must operate here**
-3. `docs/PROJECT_BIBLE/README.md` — the Bible index
-4. `docs/PROJECT_MAP.md` — fast orientation
-5. `docs/AUDIT_REPORT.md` and `docs/MISSING_INFORMATION.md` — state & open decisions
-6. The numbered specs `docs/00-ROADMAP.md` … `docs/15-UI_DESIGN.md` as needed
+2. **`docs/knowledge/AI_PRIMER.md`** — the condensed, memorizable brief of the whole project
+   (fastest way to "load" Hermes)
+3. `docs/PROJECT_BIBLE/10_Claude_Code/Instructions.md` — **how you must operate here**
+4. `docs/PROJECT_BIBLE/README.md` — the Bible index
+5. `docs/PROJECT_MAP.md` — fast orientation
+6. `docs/AUDIT_REPORT.md` and `docs/MISSING_INFORMATION.md` — state & open decisions
+7. The numbered specs `docs/00-ROADMAP.md` … `docs/15-UI_DESIGN.md` as needed
+
+The **Knowledge Hub** (`docs/knowledge/`) is the single front door that indexes every
+document in the repo (`docs/knowledge/README.md`).
 
 ## Non-negotiable rules (summary — full text in the Bible)
 
@@ -43,6 +48,10 @@ Auth.js **login UI** is deferred to the M10 dashboard. See
 - **Before major changes,** explain what will change, why, alternatives, and risks.
 - **Update the Bible's "Current State"** whenever you implement or change a system.
 - **Respect the milestone gates.** Do not build ahead without approval.
+- **Curate incoming knowledge.** Every new file, link, or note is sorted into the Knowledge
+  Hub and rewritten into the AI-friendly format — see `docs/knowledge/CURATION_RULES.md`.
+  The dedicated **`knowledge-curator`** agent (`.claude/agents/knowledge-curator.md`) does
+  this; invoke it when source material arrives. Keep `docs/knowledge/AI_PRIMER.md` current.
 
 ## Where to put things (once code exists)
 

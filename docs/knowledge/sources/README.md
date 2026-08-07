@@ -37,5 +37,5 @@ catalog file with a table of tools (links, role, and status).
 
 Several of these projects overlap conceptually with what Hermes Workspace OS builds
 (knowledge management, agents, search, ingestion). They are kept here as prior art and
-inspiration; the platform's own design lives in [`../PROJECT_BIBLE`](../PROJECT_BIBLE) and
-the numbered specs in [`../`](../).
+inspiration; the platform's own design lives in
+[`../../PROJECT_BIBLE`](../../PROJECT_BIBLE) and the numbered specs in [`../../`](../../).

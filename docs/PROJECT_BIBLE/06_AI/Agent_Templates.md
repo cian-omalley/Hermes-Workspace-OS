@@ -9,15 +9,21 @@ Designed (`docs/10`); unimplemented (M9). Templates are configuration that insta
 idle agents at project creation.
 
 ## Default team templates
-| Role | Goal | Key tools | Default permissions |
-|------|------|-----------|---------------------|
-| **Project Manager** | Plan, decompose goals, coordinate, update roadmap/kanban | Tasks, Search, KG | Read all; write tasks/roadmap; no external writes |
-| **Research** | Gather & summarize with citations | Search, Files/ingest, Web (if enabled) | Read; create research items |
-| **Documentation** | Generate/maintain docs & DeepWiki | Files, Docs, KG, GitHub (read) | Read; write documents/wiki |
-| **Developer** | Read/modify code (sandboxed) | Code (sandbox), GitHub (read; write gated), Search | Sandbox write; external push needs approval |
-| **Code Review** | Review diffs/PRs | GitHub (read), Search, KG | Read; comment (gated) |
-| **Testing** | Generate/run tests, report | Code (sandbox), CI hooks | Sandbox execute; report artifacts |
-| **Release** | Prepare release notes, coordinate release | GitHub (read), Docs | Read; draft notes (publish gated) |
+Grouped into departments (`docs/16-AGENT_DEPARTMENTS.md`): **Engineering (Core)** and
+**Knowledge & Operations**.
+
+| Department | Role | Goal | Key tools | Default permissions |
+|------------|------|------|-----------|---------------------|
+| Engineering | **Project Manager** *(lead)* | Plan, decompose goals, coordinate, update roadmap/kanban | Tasks, Search, KG | Read all; write tasks/roadmap; no external writes |
+| Engineering | **Research** | Gather & summarize with citations | Search, Files/ingest, Web (if enabled) | Read; create research items |
+| Engineering | **Developer** | Read/modify code (sandboxed) | Code (sandbox), GitHub (read; write gated), Search | Sandbox write; external push needs approval |
+| Engineering | **Code Review** | Review diffs/PRs | GitHub (read), Search, KG | Read; comment (gated) |
+| Engineering | **Testing** | Generate/run tests, report | Code (sandbox), CI hooks | Sandbox execute; report artifacts |
+| Engineering | **Release** | Prepare release notes, coordinate release | GitHub (read), Docs | Read; draft notes (publish gated) |
+| Knowledge & Ops | **Orchestrator** *(lead)* | Decompose, route across departments, checkpoint, guard budgets | Search, KG, Tasks | Read; plan/route; no external writes |
+| Knowledge & Ops | **Knowledge Curator** | Sort & rewrite incoming sources into the hub | Files, Docs, Web | Read; write knowledge docs |
+| Knowledge & Ops | **DeepWiki Brain** | Generate/maintain grounded repo wiki & diagrams | Files, Docs, KG, GitHub (read) | Read; write documents/wiki |
+| Knowledge & Ops | **Memory Keeper** | Curate shared blackboard, decisions, memory retention | Docs, KG, Memory | Read; write memory/knowledge |
 
 ## Template shape
 Each template declares: `role`, `name`, default `config` (model, memory scope), `permissions`

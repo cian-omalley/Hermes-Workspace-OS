@@ -27,6 +27,16 @@ Creating a software project provisions this team (idle until invoked):
 
 Additional/custom agents can be defined; templates live in config and are extensible.
 
+### 2.1 Departments
+
+Agents are grouped into **departments** that own an area and coordinate as a team — currently
+**Engineering (Core)** (PM, Research, Developer, Code Review, Testing, Release) and
+**Knowledge & Operations** (Orchestrator, Knowledge Curator, DeepWiki Brain, Memory Keeper).
+The department model — plus the **Harness** (durable runtime for tasks that run for days), the
+unified **Knowledge & Memory Hub**, and the inter-department coordination protocol — is
+specified in **[`16-AGENT_DEPARTMENTS.md`](16-AGENT_DEPARTMENTS.md)**. That model is already
+usable today as Claude Code tooling (`.claude/agents/` + `.claude/orchestration/`).
+
 ## 3. Agent lifecycle
 
 ```mermaid

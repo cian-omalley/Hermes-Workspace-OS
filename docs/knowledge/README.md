@@ -50,6 +50,7 @@ The deep, canonical spec for each subsystem.
 | 05 | [Database Design](../05-DATABASE_DESIGN.md) | 13 | [File Ingestion](../13-FILE_INGESTION.md) |
 | 06 | [Plugin Architecture](../06-PLUGIN_ARCHITECTURE.md) | 14 | [Workflow System](../14-WORKFLOW_SYSTEM.md) |
 | 07 | [Notion Integration](../07-NOTION_INTEGRATION.md) | 15 | [UI Design](../15-UI_DESIGN.md) |
+| | | 16 | [Agent Departments](../16-AGENT_DEPARTMENTS.md) |
 
 ## 4. Project Bible (`docs/PROJECT_BIBLE/`) — the source of truth
 
@@ -60,7 +61,7 @@ The navigable knowledge base and governance layer. Index: [`PROJECT_BIBLE/README
 | 00 Overview | [Vision](../PROJECT_BIBLE/00_Overview/Vision.md) · [Mission](../PROJECT_BIBLE/00_Overview/Mission.md) · [Goals](../PROJECT_BIBLE/00_Overview/Goals.md) · [Non-Goals](../PROJECT_BIBLE/00_Overview/Non_Goals.md) · [Glossary](../PROJECT_BIBLE/00_Overview/Glossary.md) |
 | 01 Product | [Product Requirements](../PROJECT_BIBLE/01_Product/Product_Requirements.md) · [Features](../PROJECT_BIBLE/01_Product/Features.md) · [User Stories](../PROJECT_BIBLE/01_Product/User_Stories.md) · [User Workflows](../PROJECT_BIBLE/01_Product/User_Workflows.md) · [Roadmap](../PROJECT_BIBLE/01_Product/Roadmap.md) |
 | 02 Architecture | [System](../PROJECT_BIBLE/02_Architecture/System_Architecture.md) · [Technical](../PROJECT_BIBLE/02_Architecture/Technical_Architecture.md) · [Technology Stack](../PROJECT_BIBLE/02_Architecture/Technology_Stack.md) · [Service](../PROJECT_BIBLE/02_Architecture/Service_Architecture.md) · [Data Flow](../PROJECT_BIBLE/02_Architecture/Data_Flow.md) · [Security Model](../PROJECT_BIBLE/02_Architecture/Security_Model.md) |
-| 03 Core Systems | [Core Systems](../PROJECT_BIBLE/03_Core_Systems/Core_Systems.md) · [Agent](../PROJECT_BIBLE/03_Core_Systems/Agent_System.md) · [Memory](../PROJECT_BIBLE/03_Core_Systems/Memory_System.md) · [Knowledge](../PROJECT_BIBLE/03_Core_Systems/Knowledge_System.md) · [Search](../PROJECT_BIBLE/03_Core_Systems/Search_System.md) · [Workflow](../PROJECT_BIBLE/03_Core_Systems/Workflow_System.md) |
+| 03 Core Systems | [Core Systems](../PROJECT_BIBLE/03_Core_Systems/Core_Systems.md) · [Agent](../PROJECT_BIBLE/03_Core_Systems/Agent_System.md) · [Agent Departments](../PROJECT_BIBLE/03_Core_Systems/Agent_Departments.md) · [Memory](../PROJECT_BIBLE/03_Core_Systems/Memory_System.md) · [Knowledge](../PROJECT_BIBLE/03_Core_Systems/Knowledge_System.md) · [Search](../PROJECT_BIBLE/03_Core_Systems/Search_System.md) · [Workflow](../PROJECT_BIBLE/03_Core_Systems/Workflow_System.md) |
 | 04 Integrations | [Integrations](../PROJECT_BIBLE/04_Integrations/Integrations.md) · [External Services](../PROJECT_BIBLE/04_Integrations/External_Services.md) · [API Design](../PROJECT_BIBLE/04_Integrations/API_Design.md) · [Third-Party Services](../PROJECT_BIBLE/04_Integrations/Third_Party_Services.md) |
 | 05 Data | [Database Architecture](../PROJECT_BIBLE/05_Data/Database_Architecture.md) · [Data Models](../PROJECT_BIBLE/05_Data/Data_Models.md) · [Storage Design](../PROJECT_BIBLE/05_Data/Storage_Design.md) · [Migration Strategy](../PROJECT_BIBLE/05_Data/Migration_Strategy.md) |
 | 06 AI | [AI Architecture](../PROJECT_BIBLE/06_AI/AI_Architecture.md) · [Model Strategy](../PROJECT_BIBLE/06_AI/Model_Strategy.md) · [Prompt System](../PROJECT_BIBLE/06_AI/Prompt_System.md) · [Agent Templates](../PROJECT_BIBLE/06_AI/Agent_Templates.md) · [Evaluation](../PROJECT_BIBLE/06_AI/Evaluation_System.md) |
@@ -84,9 +85,29 @@ Stack*). Index: [`sources/README.md`](./sources/README.md).
 
 ---
 
+## 7. Agent departments & orchestration (Claude Code tooling)
+
+A team of real Claude Code subagents, organized into departments, builds and maintains this
+repo. Canonical design: [`docs/16-AGENT_DEPARTMENTS.md`](../16-AGENT_DEPARTMENTS.md); governance:
+[`Agent_Departments.md`](../PROJECT_BIBLE/03_Core_Systems/Agent_Departments.md).
+
+- **Engineering (Core):** [`product-manager`](../../.claude/agents/product-manager.md) ·
+  [`researcher`](../../.claude/agents/researcher.md) ·
+  [`engineer`](../../.claude/agents/engineer.md) ·
+  [`code-reviewer`](../../.claude/agents/code-reviewer.md) ·
+  [`qa-tester`](../../.claude/agents/qa-tester.md) ·
+  [`release-manager`](../../.claude/agents/release-manager.md)
+- **Knowledge & Operations:** [`orchestrator`](../../.claude/agents/orchestrator.md) ·
+  [`knowledge-curator`](../../.claude/agents/knowledge-curator.md) *(the sorter)* ·
+  [`deepwiki-brain`](../../.claude/agents/deepwiki-brain.md) ·
+  [`memory-keeper`](../../.claude/agents/memory-keeper.md)
+- **Coordination protocol & durable state:**
+  [`.claude/orchestration/`](../../.claude/orchestration/README.md) — the shared blackboard and
+  worklog that let a single task run across many sessions and be resumed.
+
 ## The Knowledge Curator agent
 
 A dedicated project agent — [`.claude/agents/knowledge-curator.md`](../../.claude/agents/knowledge-curator.md)
 — files incoming documents/links here and rewrites them into the AI-friendly format
 defined in [`CURATION_RULES.md`](./CURATION_RULES.md). Invoke it whenever new source
-material arrives.
+material arrives. It is the **sorter** of the Knowledge & Operations department (above).

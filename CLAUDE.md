@@ -52,6 +52,13 @@ document in the repo (`docs/knowledge/README.md`).
   Hub and rewritten into the AI-friendly format — see `docs/knowledge/CURATION_RULES.md`.
   The dedicated **`knowledge-curator`** agent (`.claude/agents/knowledge-curator.md`) does
   this; invoke it when source material arrives. Keep `docs/knowledge/AI_PRIMER.md` current.
+- **Work as a team of departments.** A roster of Claude Code subagents in `.claude/agents/` is
+  organized into **Engineering** (product-manager, researcher, engineer, code-reviewer,
+  qa-tester, release-manager) and **Knowledge & Operations** (orchestrator, knowledge-curator,
+  deepwiki-brain, memory-keeper). For a large or long-running task, follow the coordination
+  protocol in `.claude/orchestration/README.md`: plan via `orchestrator`/`product-manager`,
+  route steps to the owning agent, and checkpoint state to `.claude/orchestration/blackboard.md`
+  so the task can resume across sessions. Design: `docs/16-AGENT_DEPARTMENTS.md`.
 
 ## Where to put things (once code exists)
 

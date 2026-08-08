@@ -3,7 +3,8 @@
 > **Purpose:** a dense, front-loaded brief that lets any AI model "load" the whole project
 > quickly. Facts first, short declarative lines, minimal prose. For depth, follow the
 > pointers. Keep this in sync when the project changes (the Knowledge Curator agent owns
-> it). **Last updated: 2026-07-21 (Milestones 0–4 complete).**
+> it). **Last updated: 2026-08-08 (Milestones 0–4 complete; agent-department design +
+> `.claude/` department tooling added).**
 
 ## 1. What it is (one paragraph)
 Hermes Workspace OS is an open-source, self-hostable **AI Workspace Operating System** —
@@ -41,7 +42,10 @@ keep working if any integration is disconnected.
   graph, integrations, automation.
 - **Retrieval:** hybrid keyword (Meili) + vector (Qdrant) fused by RRF, enriched by graph
   traversal (GraphRAG). **AI providers** (OpenAI/Anthropic/Gemini/Ollama) behind one port.
-- **Agents:** ephemeral, tool-using LangGraph teams; least-privilege; no idle compute.
+- **Agents:** ephemeral, tool-using LangGraph teams; least-privilege; no idle compute. Grouped
+  into **departments** (Engineering + Knowledge & Operations) run by a **Harness** that
+  checkpoints/resumes so one task can run for days; memory + DeepWiki + KG + docs hub compose a
+  single **Knowledge & Memory Hub** (design: `docs/16-AGENT_DEPARTMENTS.md`; runtime = M9).
 
 ## 4. Tech stack
 - **Backend:** Python 3.12, FastAPI, Pydantic v2, SQLAlchemy 2.0 + Alembic, Celery.
@@ -90,5 +94,7 @@ table making write+event atomic. Disconnect-safe = core works with an integratio
 ## 10. Where to go deeper
 - Orientation: `docs/PROJECT_MAP.md`. Source of truth: `docs/PROJECT_BIBLE/` (start at its
   `README.md`). Live status: `docs/PROJECT_BIBLE/09_Implementation/Current_Status.md`.
-- Claude Code rules: `docs/PROJECT_BIBLE/10_Claude_Code/`. Deep specs: `docs/00`–`15`.
+- Claude Code rules: `docs/PROJECT_BIBLE/10_Claude_Code/`. Deep specs: `docs/00`–`16`.
+- Agent departments: `docs/16-AGENT_DEPARTMENTS.md`; the real Claude Code department team +
+  coordination protocol: `.claude/agents/` + `.claude/orchestration/README.md`.
 - External reference stack: `docs/knowledge/sources/`.

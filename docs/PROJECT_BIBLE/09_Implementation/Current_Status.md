@@ -5,7 +5,7 @@ The single, honest, live snapshot of what exists **right now**. Update this at e
 milestone gate and significant change. If in doubt about project state, this is the file to
 trust.
 
-## Current State (as of 2026-07-20)
+## Current State (as of 2026-08-08)
 
 ### Stage
 **Milestone 0 — Engineering Foundation: COMPLETE.**
@@ -25,6 +25,12 @@ headline **disconnect-safe** guarantee tested. **Milestone 5 — GitHub Integrat
 - ✅ Repo governance: `README.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `CHANGELOG.md`,
   Apache-2.0 `LICENSE`, `.gitignore`, `.github/` templates + CODEOWNERS.
 - ✅ **`main` base branch created** (D10 resolved).
+- ✅ **Agent-department design + Claude Code team tooling:** the departmentalized agent OS
+  (Harness, Knowledge & Memory Hub, multi-day runs) is designed in `docs/16-AGENT_DEPARTMENTS.md`
+  + `03_Core_Systems/Agent_Departments.md` (runtime deferred to **M9**, not built ahead). A real
+  team of Claude Code subagents (`.claude/agents/`, Engineering + Knowledge & Operations) with a
+  durable coordination protocol (`.claude/orchestration/`) is usable now to build/maintain the
+  repo. This is documentation + tooling only — no `services/` runtime.
 - ✅ **Monorepo skeleton (M1):** `services/api` (FastAPI + `/health`, 3 tests),
   `services/worker` (Celery + `ping`, 3 tests), `apps/web` (Next.js shell + health
   dashboard + `/health`, 6 tests), `packages/hermes-domain` (domain events, 4 tests).

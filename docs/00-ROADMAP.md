@@ -151,6 +151,9 @@ the previous one is accepted.
 - Project agent templates (PM, Research, Docs, Developer, Review, Testing, Release).
 - Tool registry (search, KG, GitHub, files, Notion); artifact production.
 - Ephemeral agent scheduling (no idle agents running).
+- **Departments + Harness** (designed in `16-AGENT_DEPARTMENTS.md`): agents grouped into
+  Engineering and Knowledge & Operations departments; durable checkpoint/resume so a single
+  task can run for days; the unified Knowledge & Memory Hub.
 
 **Exit:** Creating a project spins up its agent team on demand; agents produce artifacts.
 

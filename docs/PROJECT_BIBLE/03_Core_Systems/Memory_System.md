@@ -16,6 +16,18 @@ Designed as part of the agent system (`docs/10 §4`); unimplemented (M9). Backed
 | **Long-term** | Durable facts/preferences/learnings | Persistent | `agent_memory` + embedding ref |
 | **Shared (blackboard)** | Project team | Project lifetime | Project memory scope |
 
+## Knowledge & Memory Hub
+The tiers above are one part of a single addressable **Knowledge & Memory Hub** that the agent
+departments read and write (`docs/16-AGENT_DEPARTMENTS.md §5`). The hub *composes* existing
+stores — it adds no new database:
+- **Memory tiers** (this doc) — working/short/long-term + shared blackboard.
+- **DeepWiki brain** (`docs/09`) — living, grounded repo/architecture docs (`wiki_pages`).
+- **Knowledge graph** (`docs/11`) — entities & relationships (Neo4j).
+- **Docs knowledge hub** (`docs/knowledge/`) — curated human/AI documents & sources.
+
+Retrieval across the hub is GraphRAG (`docs/12`). The **Memory Keeper** and **Knowledge
+Curator** agents keep it deduplicated, scoped, and permissioned.
+
 ## Retrieval
 - **Semantic recall:** long-term memories are embedded (`embedding_ref_id`) and retrieved
   by similarity to the current goal/context.

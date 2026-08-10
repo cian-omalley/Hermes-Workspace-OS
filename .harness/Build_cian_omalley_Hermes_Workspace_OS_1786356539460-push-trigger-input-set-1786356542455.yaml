@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_cian_omalley_Hermes_Workspace_OS_1786356539460-push-trigger-input-set
+  identifier: Build_cian_omalley_Hermes_Workspace_OS_1786356539460pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_cian_omalley_Hermes_Workspace_OS_1786356539460
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
